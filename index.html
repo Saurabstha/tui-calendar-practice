@@ -238,9 +238,14 @@
 		    'beforeUpdateSchedule': function(e) {
 		        console.log('beforeUpdateSchedule', e);
 		        // e.schedule.title = e.title;
-		        e.schedule.start = e.start;
-		        e.schedule.end = e.end;
-		        calendar.updateSchedule(e.schedule.id, e.schedule.calendarId, e.schedule);
+		        // e.schedule.start = e.start;
+		        // e.schedule.end = e.end;
+		        // calendar.updateSchedule(e.schedule.id, e.schedule.calendarId, e.schedule);
+
+		        var schedule = e.schedule;
+			    var changes = e.changes;
+
+			    calendar.updateSchedule(schedule.id, schedule.calendarId, changes);
 		    },
 		    'beforeDeleteSchedule': function(e) {
 		        console.log('beforeDeleteSchedule', e);
