@@ -31,6 +31,7 @@
         // event handlers
         cal.on({
             'clickSchedule': function(e) {
+                console.log("suru");
                 console.log('clickSchedule', e);
                 /* step1. open custom detail popup */
                 const willModify = confirm(`title: ${e.schedule.title}\n when: ${yyyymmdd(new Date(e.schedule.start))} \nWill you update schedule?`);
@@ -38,6 +39,7 @@
                 if (willModify) { // step1-1. open edit popup */ 
                     e.schedule.title = prompt('Schedule', e.schedule.title);
                     cal.updateSchedule(e.schedule.id, e.schedule.calendarId, e.schedule);
+                    console.log("momo first");
                 }
             },
             'beforeCreateSchedule': function(e) {
@@ -62,6 +64,7 @@
                 e.schedule.start = e.start;
                 e.schedule.end = e.end;
                 cal.updateSchedule(e.schedule.id, e.schedule.calendarId, e.schedule);
+                console.log("momo");
             },
             'beforeDeleteSchedule': function(e) {
                 console.log('beforeDeleteSchedule', e);

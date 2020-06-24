@@ -105,37 +105,37 @@
 		  }
 		});
 
-		calendar.createSchedules([
-		    {
-		        id: '1',
-		        calendarId: '1',
-		        title: 'my schedule',
-		        category: 'time',
-		        dueDateClass: '',
-		        start: '2020-06-18T22:30:00+09:00',
-		        end: '2020-06-19T02:30:00+09:00'
-		    },
-		    {
-		        id: '2',
-		        calendarId: '1',
-		        title: 'second schedule',
-		        category: 'time',
-		        dueDateClass: '',
-		        start: '2020-06-20T17:30:00+09:00',
-		        end: '2020-06-21T17:31:00+09:00',
-		        isReadOnly: true    // schedule is read-only
-		    },
-		    {
-				id: '3',
-		        calendarId: '1',
-		        category: 'time',
-		        dueDateClass: '',
-			    title: 'read-only .. schedule',
-			    isReadOnly: true,
-			    start: '2020-06-25T17:30:00+09:00',
-		        end: '2020-06-26T17:31:00+09:00'
-		}
-		]);
+		// calendar.createSchedules([
+		//     {
+		//         id: '1',
+		//         calendarId: '1',
+		//         title: 'my schedule',
+		//         category: 'time',
+		//         dueDateClass: '',
+		//         start: '2020-06-18T22:30:00+09:00',
+		//         end: '2020-06-19T02:30:00+09:00'
+		//     },
+		//     {
+		//         id: '2',
+		//         calendarId: '1',
+		//         title: 'second schedule',
+		//         category: 'time',
+		//         dueDateClass: '',
+		//         start: '2020-06-20T17:30:00+09:00',
+		//         end: '2020-06-21T17:31:00+09:00',
+		//         isReadOnly: true    // schedule is read-only
+		//     },
+		//     {
+		// 		id: '3',
+		//         calendarId: '1',
+		//         category: 'time',
+		//         dueDateClass: '',
+		// 	    title: 'read-only .. schedule',
+		// 	    isReadOnly: true,
+		// 	    start: '2020-06-25T17:30:00+09:00',
+		//         end: '2020-06-26T17:31:00+09:00'
+		// }
+		// ]);
 
 		// calendar.updateSchedule('3', '1', {
 		// 	    title: 'updated',
@@ -149,26 +149,37 @@
 		// calendar.deleteSchedule('2', '1');
 		console.log(calendar._controller.schedules.items);
 
-		calendar.on('beforeCreateSchedule', function(event) {
-		    var startTime = event.start;
-		    var endTime = event.end;
-		    var isAllDay = event.isAllDay;
-		    var guide = event.guide;
-		    var triggerEventName = event.triggerEventName;
-		    var schedule;
+		// calendar.on('beforeCreateSchedule', function(event) {
+		//     var startTime = event.start;
+		//     var endTime = event.end;
+		//     var isAllDay = event.isAllDay;
+		//     var guide = event.guide;
+		//     var triggerEventName = event.triggerEventName;
+		//     var schedule;
+	 //        console.log("hello from single click bahira");
 
-		    if (triggerEventName === 'click') {
-		        // open writing simple schedule popup
-		        // alert("click");
-		        schedule = {...schedule};
-		    } else if (triggerEventName === 'dblclick') {
-		        // open writing detail schedule popup
-		        // alert("dbclick");
-		        schedule = {...schedule};
-		    }
 
-		    calendar.createSchedules([schedule]);
-		});
+		//     if (triggerEventName === 'click') {
+		//         // open writing simple schedule popup
+		//         // alert("click");
+		//         // schedule = {...schedule};
+		//         console.log("hello from single click");
+		//         schedule = {
+  //                   id: +new Date(),
+  //                   title: "title",
+  //                   isAllDay: true,
+  //                   start: e.start,
+  //                   end: e.end,
+  //                   category:  'allday'
+  //               };
+		//     } else if (triggerEventName === 'dblclick') {
+		//         // open writing detail schedule popup
+		//         alert("dbclick");
+		//         // schedule = {...schedule};
+		//     }
+
+		//     calendar.createSchedules([schedule]);
+		// });
 
 		// calendar.on('clickSchedule', function(event) {
 		//     var schedule = event.schedule;
@@ -192,30 +203,50 @@
 		// });
 
 		// event handlers
-calendar.on({
-    'clickSchedule': function(e) {
-        console.log('clickSchedule', e);
-    },
-    'beforeCreateSchedule': function(e) {
-        console.log('beforeCreateSchedule', e);
-        // open a creation popup
+		calendar.on({
+		    'clickSchedule': function(e) {
+		        console.log('clickSchedule', e);
+		        // e.schedule.title = e.title;
+		        // calendar.updateSchedule(e.schedule.id, e.schedule.calendarId, e.schedule);
+		    },
+		    'beforeCreateSchedule': function(e) {
+		        console.log('beforeCreateSchedule', e);
+		        console.log("hheeee");
+		        // open a creation popup
 
-        // If you dont' want to show any popup, just use `e.guide.clearGuideElement()`
+		        var schedule = {
+                    id: +new Date(),
+                    calendarId: '1',
+                    title: e.title,
+                    isAllDay: true,
+                    start: e.start,
+                    end: e.end,
+                    category:  'allday'
+                };
+		        calendar.createSchedules([schedule]);
 
-        // then close guide element(blue box from dragging or clicking days)
-        e.guide.clearGuideElement();
-    },
-    'beforeUpdateSchedule': function(e) {
-        console.log('beforeUpdateSchedule', e);
-        e.schedule.start = e.start;
-        e.schedule.end = e.end;
-        calendar.updateSchedule(e.schedule.id, e.schedule.calendarId, e.schedule);
-    },
-    'beforeDeleteSchedule': function(e) {
-        console.log('beforeDeleteSchedule', e);
-        calendar.deleteSchedule(e.schedule.id, e.schedule.calendarId);
-    }
-});
+                
+
+
+		        // If you dont' want to show any popup, just use `e.guide.clearGuideElement()`
+
+		        // then close guide element(blue box from dragging or clicking days)
+		        // e.guide.clearGuideElement();
+		        // calendar.createSchedules([e]);
+		        console.log(calendar._controller.schedules.items);
+		    },
+		    'beforeUpdateSchedule': function(e) {
+		        console.log('beforeUpdateSchedule', e);
+		        // e.schedule.title = e.title;
+		        e.schedule.start = e.start;
+		        e.schedule.end = e.end;
+		        calendar.updateSchedule(e.schedule.id, e.schedule.calendarId, e.schedule);
+		    },
+		    'beforeDeleteSchedule': function(e) {
+		        console.log('beforeDeleteSchedule', e);
+		        calendar.deleteSchedule(e.schedule.id, e.schedule.calendarId);
+		    }
+		});
 
 		
 	</script>
