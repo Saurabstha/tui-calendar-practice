@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+
+  <head>
+
+    <title>This is the story of me, learning HTML on my own</title>
+    <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.css" />
+
+	<!-- If you use the default popups, use this. -->
+	<link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+	<link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
+
+  </head>
+
+  <body>
+
+    <p>Today I woke up decided to learn <abbr title="Hypertext Markup Language">HTML</abbr> on my own.</p>
+    <div id="calendar" style="height: 800px;">
+    	dada
+    </div>
+
+    <script src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
+	<script src="https://uicdn.toast.com/tui.dom/v3.0.0/tui-dom.js"></script>
+	<script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script>
+	<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
+	<script src="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.js"></script>
+
+	<script>
+	// register templates
+	  var templates = {
+	    popupIsAllDay: function() {
+	      return 'All Day';
+	    },
+	    popupStateFree: function() {
+	      return 'Free';
+	    },
+	    popupStateBusy: function() {
+	      return 'Busy';
+	    },
+	    titlePlaceholder: function() {
+	      return 'Subject';
+	    },
+	    locationPlaceholder: function() {
+	      return 'Location';
+	    },
+	    startDatePlaceholder: function() {
+	      return 'Start date';
+	    },
+	    endDatePlaceholder: function() {
+	      return 'End date';
+	    },
+	    popupSave: function() {
+	      return 'Save';
+	    },
+	    popupUpdate: function() {
+	      return 'Update';
+	    },
+	    popupDetailDate: function(isAllDay, start, end) {
+	      var isSameDate = moment(start).isSame(end);
+	      var endFormat = (isSameDate ? '' : 'YYYY.MM.DD ') + 'hh:mm a';
+
+	      if (isAllDay) {
+	        return moment(start).format('YYYY.MM.DD') + (isSameDate ? '' : ' - ' + moment(end).format('YYYY.MM.DD'));
+	      }
+
+	      return (moment(start).format('YYYY.MM.DD hh:mm a') + ' - ' + moment(end).format(endFormat));
+	    },
+	    popupDetailLocation: function(schedule) {
+	      return 'Location : ' + schedule.location;
+	    },
+	    popupDetailUser: function(schedule) {
+	      return 'User : ' + (schedule.attendees || []).join(', ');
+	    },
+	    popupDetailState: function(schedule) {
+	      return 'State : ' + schedule.state || 'Busy';
+	    },
+	    popupDetailRepeat: function(schedule) {
+	      return 'Repeat : ' + schedule.recurrenceRule;
+	    },
+	    popupDetailBody: function(schedule) {
+	      return 'Body : ' + schedule.body;
+	    },
+	    popupEdit: function() {
+	      return 'Edit';
+	    },
+	    popupDelete: function() {
+	      return 'Delete';
+	    }
+	  };
+
+		var Calendar = tui.Calendar;
+
+		var calendar = new Calendar('#calendar', {
+			template: templates,
+		    useCreationPopup: true,
+		    useDetailPopup: true,
+		  defaultView: 'month',
+		  taskView: true,
+		  template: {
+		    monthDayname: function(dayname) {
+		      return '<span class="calendar-week-dayname-name">' + dayname.label + '</span>';
+		    }
+		    
+		  }
+		});
+
+		calendar.createSchedules([
+		    {
+		        id: '1',
+		        calendarId: '1',
+		        title: 'my schedule',
+		        category: 'time',
+		        dueDateClass: '',
+		        start: '2020-06-18T22:30:00+09:00',
+		        end: '2020-06-19T02:30:00+09:00'
+		    },
+		    {
+		        id: '2',
+		        calendarId: '1',
+		        title: 'second schedule',
+		        category: 'time',
+		        dueDateClass: '',
+		        start: '2020-06-20T17:30:00+09:00',
+		        end: '2020-06-21T17:31:00+09:00',
+		        isReadOnly: true    // schedule is read-only
+		    },
+		    {
+				id: '3',
+		        calendarId: '1',
+		        category: 'time',
+		        dueDateClass: '',
+			    title: 'read-only .. schedule',
+			    isReadOnly: true,
+			    start: '2020-06-25T17:30:00+09:00',
+		        end: '2020-06-26T17:31:00+09:00'
+		}
+		]);
+
+		// calendar.updateSchedule('3', '1', {
+		// 	    title: 'updated',
+		// });
+
+		// calendar.updateSchedule(schedule.id, schedule.calendarId, {
+		//     start: startTime,
+		//     end: endTime
+		// });
+
+		// calendar.deleteSchedule('2', '1');
+		console.log(calendar._controller.schedules.items);
+
+		calendar.on('beforeCreateSchedule', function(event) {
+		    var startTime = event.start;
+		    var endTime = event.end;
+		    var isAllDay = event.isAllDay;
+		    var guide = event.guide;
+		    var triggerEventName = event.triggerEventName;
+		    var schedule;
+
+		    if (triggerEventName === 'click') {
+		        // open writing simple schedule popup
+		        // alert("click");
+		        schedule = {...schedule};
+		    } else if (triggerEventName === 'dblclick') {
+		        // open writing detail schedule popup
+		        // alert("dbclick");
+		        schedule = {...schedule};
+		    }
+
+		    calendar.createSchedules([schedule]);
+		});
+
+		// calendar.on('clickSchedule', function(event) {
+		//     var schedule = event.schedule;
+		//     // alert("hello", schedule);
+		//     console.log("schee", schedule);
+		//     var lastClickSchedule;
+
+		//     // focus the schedule
+		//     if (lastClickSchedule) {
+		//         calendar.updateSchedule(lastClickSchedule.id, lastClickSchedule.calendarId, {
+		//             isFocused: false
+		//         });
+		//     }
+		//     calendar.updateSchedule(schedule.id, schedule.calendarId, {
+		//         isFocused: true
+		//     });
+
+		//     lastClickSchedule = schedule;
+
+		//     // open detail view
+		// });
+
+		// event handlers
+calendar.on({
+    'clickSchedule': function(e) {
+        console.log('clickSchedule', e);
+    },
+    'beforeCreateSchedule': function(e) {
+        console.log('beforeCreateSchedule', e);
+        // open a creation popup
+
+        // If you dont' want to show any popup, just use `e.guide.clearGuideElement()`
+
+        // then close guide element(blue box from dragging or clicking days)
+        e.guide.clearGuideElement();
+    },
+    'beforeUpdateSchedule': function(e) {
+        console.log('beforeUpdateSchedule', e);
+        e.schedule.start = e.start;
+        e.schedule.end = e.end;
+        calendar.updateSchedule(e.schedule.id, e.schedule.calendarId, e.schedule);
+    },
+    'beforeDeleteSchedule': function(e) {
+        console.log('beforeDeleteSchedule', e);
+        calendar.deleteSchedule(e.schedule.id, e.schedule.calendarId);
+    }
+});
+
+		
+	</script>
+
+  </body>
+
+</html>
